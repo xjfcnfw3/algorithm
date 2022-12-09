@@ -1,24 +1,35 @@
-from collections import deque
-
-
-def bfs(graph, start, visited):
-    queue = deque([start])
-    visited[start] = True
-    while queue:
-        v = queue.popleft()
-        for i in graph[v]:
-            if not visited[i]:
-                queue.append(i)
-                visited[i] = True
-
-
-n, m = map(int, input().split())
-arr = [[] for i in range(n)]
+n, m = map(int, input().split(" "))
+graph = [[] for i in range(n)]
+visited = [False] * 2001
 for i in range(m):
-    start, end = map(int,input().split())
-    arr[start].append(end)
+    x, y = map(int, input().split(" "))
+    graph[x].append(y)
+    graph[y].append(x)
+answer = False
 
-checked = [0 for i in range(n)]
-bfs(arr, 0, checked)
-print(checked)
 
+def bfs(deep, v):
+    global answer
+    visited[v] = True
+    if deep == 4:
+        answer = True
+        return
+
+    for i in graph[v]:
+        if not visited[i]:
+            visited[i] = True
+            bfs(deep + 1, i)
+            visited[i] = False
+
+
+for i in range(n):
+    bfs(0, i)
+    visited[i] = False
+    if answer:
+        break
+
+bfs(0, 0)
+if answer:
+    print(1)
+else:
+    print(0)
