@@ -1,17 +1,30 @@
-from itertools import permutations
-n = int(input())
-arr = []
-for i in range(n):
-    arr_s = list(map(int, input().split()))
-    arr.append(arr_s)
+import sys
 
-result = permutations(list(range(n)), n)
-min_d = 99999999999
-for path in result:
-    distance = 0
-    for i in range(0, len(list(path))-1):
-        distance += arr[path[i]][path[i+1]]
-    distance += arr[path[n-1]][path[0]]
-    if min_d > distance:
-        min_d = distance
-print(min_d)
+sys.setrecursionlimit(100000000)
+
+n = int(input())
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input().split())))
+
+MAX = 10 ** 8
+price = MAX
+
+
+def dfs(start, current, path, visited):
+    global price
+
+    if n == len(visited):
+        if graph[current][start]:
+            price = min(price, path + graph[current][start])
+        return
+    for end in range(n):
+        if graph[current][end] and end not in visited and path < price:
+            visited.append(end)
+            dfs(start, end, path + graph[current][end], visited)
+            visited.pop()
+
+
+for i in range(n):
+    dfs(i, i, 0, [i])
+print(price)
