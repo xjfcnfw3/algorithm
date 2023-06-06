@@ -1,16 +1,35 @@
 arr = list(input())
 stack = []
 score = 0
+tmp = 1
 
-for i in arr:
-    if i == '(' or i == '[':
-        stack.append(i)
-    if i == ')' or i == ']':
-        if stack is None:
-            print(0)
-            exit()
-        else:
-            d = stack.pop(-1)
-            if d == '(':
-                if i == ')':
+for i in range(len(arr)):
 
+    if arr[i] == "(":
+        stack.append(arr[i])
+        tmp *= 2
+    elif arr[i] == "[":
+        stack.append(arr[i])
+        tmp *= 3
+    elif arr[i] == ")":
+        if not stack or stack[-1] == "[":
+            score = 0
+            break
+        if arr[i - 1] == "(":
+            score += tmp
+        stack.pop()
+        tmp //= 2
+    else:
+        if not stack or stack[-1] == "(":
+            score = 0
+            break
+        if arr[i - 1] == "[":
+            score += tmp
+
+        stack.pop()
+        tmp //= 3
+
+if stack:
+    print(0)
+else:
+    print(score)
