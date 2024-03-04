@@ -11,7 +11,7 @@ def get_music(info):
 def get_music_info(info, music_time):
     result = get_music(info)
     if music_time >= len(result):
-        return result * (music_tim e/ /len(result)) + result[:music_tim e %len(result)]
+        return result * (music_time // len(result)) + result[:music_time %len(result)]
     else:
         return result[:music_time]
 
