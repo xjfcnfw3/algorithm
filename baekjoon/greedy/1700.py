@@ -1,15 +1,25 @@
-from collections import Counter
 import heapq
 
-n, k = map(int, input())
+n, k = map(int, input().split())
 arr = list(map(int, input().split()))
-q = []
+plug = set()
 result = 0
-current = 0
-con = []
-for k, v in Counter(arr):
-    heapq.heappush(q, (k, v))
-
 for i in range(k):
-    if current < n:
-        con.a
+    if arr[i] in plug:
+        continue
+    if len(plug) < n:
+        plug.add(arr[i])
+        continue
+    result += 1
+    q = []
+    for key in plug:
+        if key in arr[i + 1:]:
+            heapq.heappush(q, (-(arr[i + 1:].index(key) + i), key))
+        else:
+
+            heapq.heappush(q, (-k, key))
+    index, value = heapq.heappop(q)
+    plug.remove(value)
+    plug.add(arr[i])
+print(result)
+
