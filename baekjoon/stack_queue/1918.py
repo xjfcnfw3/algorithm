@@ -1,20 +1,25 @@
 arr = list(input())
 result = []
 stack = []
-num = 0
-for i in arr:
-    if i == "*" and i =="+" and i == "-" and i == "/":
-        stack.append(i)
-    elif i == "(":
-        num += 1
-    elif i == ")":
-        num -= 1
-        if num == 0:
-            while stack:
-                result.append(stack.pop())
+result = ''
+for s in arr:
+    if s.isalpha():
+        result += s
     else:
-        result.append(i)
-
+        if s == '(':
+            stack.append(s)
+        elif s == "*" or s == "/":
+            while stack and (stack[-1] == '*' or stack[-1] == "/"):
+                result += stack.pop()
+            stack.append(s)
+        elif s == "+" or s == '-':
+            while stack and stack[-1] != '(':
+                result += stack.pop()
+            stack.append(s)
+        elif s == ')':
+            while stack and stack[-1] != '(':
+                result += stack.pop()
+            stack.pop()
 while stack:
-    result.append(stack.pop())
+    result += stack.pop()
 print(result)
